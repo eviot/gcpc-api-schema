@@ -3,6 +3,7 @@ syntax = "proto3";
 //import "google/protobuf/any.proto";
 
 package schema;
+option go_package = "gapi";
 
 service Eviot {
 	// sending messages from the pipe
