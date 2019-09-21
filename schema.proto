@@ -1,0 +1,208 @@
+syntax = "proto3";
+
+//import "google/protobuf/any.proto";
+
+package schema;
+
+service Eviot {
+	// sending messages from the pipe
+	rpc PipeSend(stream PipeSendRequest) returns (PipeSendResponse);
+	// receive messages from the pipe
+	rpc PipeReceive(PipeReceiveRequest) returns (stream PipeReceiveResponse);
+
+	// do need it?
+	rpc OnInitFlow(OnInitFlowRequest) returns (stream OnInitFlowResponse);
+	rpc OnPipeInit(OnPipeInitRequest) returns (stream OnPipeInitResponse);
+
+	// device registration in the system
+	rpc RegDevice(RegDeviceRequest) returns (RegDeviceResponse);
+	// device authorization in the system
+	// rpc AuthDevice(AuthDeviceRequest) returns (AuthDeviceResponse);
+	// set device status: online or offline
+	rpc SetDeviceOnline(SetDeviceOnlineRequest) returns (SetDeviceOnlineResponse);
+
+	rpc GetUser(GetUserRequest) returns (User);
+	rpc GetUserByEmail(GetUserByEmailRequest) returns (User);
+	rpc GetUserByToken(GetUserByTokenRequest) returns (User);
+
+	// rpc Login(LoginRequest) returns (Token);
+	// rpc CreateUser(CreateUserRequest) returns (Token);
+	// rpc SendResetPasswordLink(SendResetPasswordLinkRequest) returns (SendResetPasswordLinkResponse);
+	// rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+	rpc GetDevice(GetDeviceRequest) returns (Device);
+}
+
+message PipeSendRequest {
+	string deviceID = 1;
+	string pipeID = 2;
+	string outputID = 3;
+	map<string, Value> message = 4;
+}
+
+message PipeSendResponse {}
+
+message PipeReceiveRequest {
+	// string deviceID = 2;
+	string pipeTypeID = 1;
+}
+
+message PipeReceiveResponse {
+	string deviceID = 5;
+	string pipeTypeID = 4;
+	string pipeID = 3;
+	string inputID = 2;
+	map<string, Value> message = 1;
+	map<string, Value> params = 6;
+}
+
+message OnInitFlowRequest {
+	string deviceID = 1;
+	repeated Flow flows = 2;
+}
+
+message OnInitFlowResponse {}
+
+message OnPipeInitRequest {
+	string pipeTypeID = 1;
+}
+
+message OnPipeInitResponse {
+	string deviceID = 1;
+	// string flowID = 2;
+	string pipeID = 3;
+	string pipeTypeID = 4;
+	map<string, Value> params = 5;
+}
+
+message RegDeviceRequest {
+	string deviceTypeID = 1;
+	string userID = 2;
+}
+message RegDeviceResponse {
+	string deviceID = 1;
+}
+// message AuthDeviceRequest {
+// 	string deviceID = 1;
+// }
+// message AuthDeviceResponse {
+// 	bool ok = 1;
+// }
+message SetDeviceOnlineRequest {
+	string deviceID = 1;
+	bool online = 2;
+}
+message SetDeviceOnlineResponse {
+	bool ok = 1;
+}
+
+message GetUserRequest {
+	string ID = 1;
+}
+message GetUserByEmailRequest {
+	string email = 1;
+}
+message GetUserByTokenRequest {
+	string token = 1;
+}
+
+message GetDeviceRequest {
+	string ID = 1;
+}
+
+///////
+
+message Value {
+	enum Type {
+		STRING = 0;
+		UINT = 1;
+		FLOAT = 2;
+		BOOLEAN = 3;
+	}
+	Type type = 1;
+	bytes value = 2;
+}
+
+message User {
+	string ID = 1;
+	UserEmail email = 2;
+	int64 createdAt = 3;
+}
+
+message UserEmail {
+	string address = 1;
+	bool verified = 2;
+}
+
+message Plugin {
+	string ID = 1;
+	string name = 2;
+	repeated PipeType pipeTypes = 3;
+}
+
+message PipeType {
+	string ID = 1;
+	string description = 2;
+	repeated PipeTypeParam params = 3;
+	repeated string inputs = 4;
+	repeated string outputs = 5;
+}
+
+message PipeTypeParam {
+	string ID = 1;
+	string Type = 2;
+	Value defaultValue = 3;
+	string description = 4;
+}
+
+message DeviceType {
+	string ID = 1;
+	string name = 2;
+	VariableDeclaration variables = 3;
+	Flow flow = 4;
+}
+
+message VariableDeclaration {
+	string name = 1;
+	string type = 2;
+	Value defaultValue = 3;
+	string description = 4;
+}
+
+message Flow {
+	repeated Pipe pipes = 1;
+}
+
+message Pipe {
+	string ID = 1;
+	string pluginID = 2;
+	string pipeTypeID = 3;
+	map<string, Value> params = 4;
+	repeated Bind binds = 5;
+}
+
+message Bind {
+	string fromOutput = 1;
+	string toPipe = 2;
+	string toInput = 3;
+}
+
+message Device {
+	string ID = 1;
+	string name = 2;
+	string deviceTypeID = 3;
+	string userID = 4;
+	repeated Variable variables = 5;
+}
+
+message Variable {
+	string Name = 1;
+	Value value = 2;
+	Value previousValue = 3;
+}
+
+message Token {
+	string ID = 1;
+	string value = 2;
+	string targetID = 3;
+}
+
