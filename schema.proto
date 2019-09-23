@@ -22,15 +22,17 @@ service Eviot {
 	// set device status: online or offline
 	rpc SetDeviceOnline(SetDeviceOnlineRequest) returns (SetDeviceOnlineResponse);
 
-	rpc GetUser(GetUserRequest) returns (User);
-	rpc GetUserByEmail(GetUserByEmailRequest) returns (User);
-	rpc GetUserByToken(GetUserByTokenRequest) returns (User);
+	rpc User(UserRequest) returns (schema.User);
+	rpc UserByEmail(UserByEmailRequest) returns (schema.User);
+	rpc UserByToken(UserByTokenRequest) returns (schema.User);
 
-	// rpc Login(LoginRequest) returns (Token);
-	// rpc CreateUser(CreateUserRequest) returns (Token);
-	// rpc SendResetPasswordLink(SendResetPasswordLinkRequest) returns (SendResetPasswordLinkResponse);
-	// rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
-	rpc GetDevice(GetDeviceRequest) returns (Device);
+	rpc Login(LoginRequest) returns (Token);
+	rpc CreateUser(CreateUserRequest) returns (Token);
+	rpc SendResetPasswordLink(SendResetPasswordLinkRequest) returns (SendResetPasswordLinkResponse);
+	rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
+
+	rpc Device(DeviceRequest) returns (schema.Device);
+	rpc DeviceType(DeviceTypeRequest) returns (schema.DeviceType);
 }
 
 message PipeSendRequest {
@@ -96,19 +98,49 @@ message SetDeviceOnlineResponse {
 	bool ok = 1;
 }
 
-message GetUserRequest {
+message UserRequest {
 	string ID = 1;
 }
-message GetUserByEmailRequest {
+message UserByEmailRequest {
 	string email = 1;
 }
-message GetUserByTokenRequest {
+message UserByTokenRequest {
 	string token = 1;
 }
 
-message GetDeviceRequest {
+message DeviceRequest {
 	string ID = 1;
 }
+
+message DeviceTypeRequest {
+	string ID = 1;
+}
+
+message LoginRequest {
+	string email = 1;
+	string pass = 2;
+}
+message CreateUserRequest {
+	string email = 1;
+	string pass = 2;
+}
+
+message SendResetPasswordLinkRequest {
+	string email = 1;
+}
+message SendResetPasswordLinkResponse {
+	bool ok = 1;
+}
+
+message ResetPasswordRequest {
+	string token = 1;
+	string newPass = 2;
+}
+message ResetPasswordResponse {
+	bool ok = 1;
+}
+
+
 
 ///////
 
