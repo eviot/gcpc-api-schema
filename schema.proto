@@ -155,10 +155,15 @@ message Value {
 	bytes value = 2;
 }
 
+message UnixTime {
+	int64 sec = 1;
+	int64 nsec = 2;
+}
+
 message User {
 	string ID = 1;
 	UserEmail email = 2;
-	int64 createdAt = 3;
+	UnixTime createdAt = 3;
 }
 
 message UserEmail {
@@ -190,11 +195,11 @@ message PipeTypeParam {
 message DeviceType {
 	string ID = 1;
 	string name = 2;
-	VariableDeclaration variables = 3;
+	DeviceTypeVariable variables = 3;
 	Flow flow = 4;
 }
 
-message VariableDeclaration {
+message DeviceTypeVariable {
 	string name = 1;
 	string type = 2;
 	Value defaultValue = 3;
@@ -224,10 +229,10 @@ message Device {
 	string name = 2;
 	string deviceTypeID = 3;
 	string userID = 4;
-	repeated Variable variables = 5;
+	repeated DeviceVariable variables = 5;
 }
 
-message Variable {
+message DeviceVariable {
 	string Name = 1;
 	Value value = 2;
 	Value previousValue = 3;
