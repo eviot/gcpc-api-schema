@@ -7,9 +7,9 @@ option go_package = "gapi";
 
 service Eviot {
 	// sending messages from the pipe
-	rpc PipeSend(stream PipeSendRequest) returns (PipeSendResponse);
+	rpc SendPipe(stream SendPipeRequest) returns (SendPipeResponse);
 	// receive messages from the pipe
-	rpc PipeReceive(PipeReceiveRequest) returns (stream PipeReceiveResponse);
+	rpc ReceivePipe(ReceivePipeRequest) returns (stream ReceivePipeResponse);
 
 	// do need it?
 	rpc OnInitFlow(OnInitFlowRequest) returns (stream OnInitFlowResponse);
@@ -22,36 +22,36 @@ service Eviot {
 	// set device status: online or offline
 	rpc SetDeviceOnline(SetDeviceOnlineRequest) returns (SetDeviceOnlineResponse);
 
-	rpc User(UserRequest) returns (schema.User);
-	rpc UserByEmail(UserByEmailRequest) returns (schema.User);
-	rpc UserByToken(UserByTokenRequest) returns (schema.User);
+	rpc GetUser(GetUserRequest) returns (User);
+	// rpc UserByEmail(UserByEmailRequest) returns (User);
+	// rpc UserByToken(UserByTokenRequest) returns (User);
 
-	rpc Token(TokenRequest) returns (schema.Token);
+	rpc GetToken(GetTokenRequest) returns (Token);
 
-	rpc Login(LoginRequest) returns (schema.Token);
-	rpc CreateUser(CreateUserRequest) returns (schema.Token);
+	rpc Login(LoginRequest) returns (Token);
+	rpc CreateUser(CreateUserRequest) returns (Token);
 	rpc SendResetPasswordLink(SendResetPasswordLinkRequest) returns (SendResetPasswordLinkResponse);
 	rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
 
-	rpc Device(DeviceRequest) returns (schema.Device);
-	rpc DeviceType(DeviceTypeRequest) returns (schema.DeviceType);
+	rpc GetDevice(GetDeviceRequest) returns (Device);
+	rpc GetDeviceType(GetDeviceTypeRequest) returns (DeviceType);
 }
 
-message PipeSendRequest {
+message SendPipeRequest {
 	string deviceID = 1;
 	string pipeID = 2;
 	string outputID = 3;
 	map<string, Value> message = 4;
 }
 
-message PipeSendResponse {}
+message SendPipeResponse {}
 
-message PipeReceiveRequest {
+message ReceivePipeRequest {
 	// string deviceID = 2;
 	string pipeTypeID = 1;
 }
 
-message PipeReceiveResponse {
+message ReceivePipeResponse {
 	string deviceID = 5;
 	string pipeTypeID = 4;
 	string pipeID = 3;
@@ -100,25 +100,27 @@ message SetDeviceOnlineResponse {
 	bool ok = 1;
 }
 
-message UserRequest {
+message GetUserRequest {
+	oneof filter {
+		string ID = 1;
+		string email = 2;
+		string token = 3;
+		string userID = 4;
+	}
+}
+
+message GetTokenRequest {
+	oneof filter {
+		string value = 1;
+		string targetID = 2;
+	}
+}
+
+message GetDeviceRequest {
 	string ID = 1;
 }
-message UserByEmailRequest {
-	string email = 1;
-}
-message UserByTokenRequest {
-	string token = 1;
-}
 
-message TokenRequest {
-	string value = 1;
-}
-
-message DeviceRequest {
-	string ID = 1;
-}
-
-message DeviceTypeRequest {
+message GetDeviceTypeRequest {
 	string ID = 1;
 }
 
