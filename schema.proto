@@ -26,8 +26,10 @@ service Eviot {
 	rpc UserByEmail(UserByEmailRequest) returns (schema.User);
 	rpc UserByToken(UserByTokenRequest) returns (schema.User);
 
-	rpc Login(LoginRequest) returns (Token);
-	rpc CreateUser(CreateUserRequest) returns (Token);
+	rpc Token(TokenRequest) returns (schema.Token);
+
+	rpc Login(LoginRequest) returns (schema.Token);
+	rpc CreateUser(CreateUserRequest) returns (schema.Token);
 	rpc SendResetPasswordLink(SendResetPasswordLinkRequest) returns (SendResetPasswordLinkResponse);
 	rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
 
@@ -106,6 +108,10 @@ message UserByEmailRequest {
 }
 message UserByTokenRequest {
 	string token = 1;
+}
+
+message TokenRequest {
+	string value = 1;
 }
 
 message DeviceRequest {
@@ -195,7 +201,7 @@ message PipeTypeParam {
 message DeviceType {
 	string ID = 1;
 	string name = 2;
-	DeviceTypeVariable variables = 3;
+	repeated DeviceTypeVariable variables = 3;
 	Flow flow = 4;
 }
 
@@ -242,5 +248,12 @@ message Token {
 	string ID = 1;
 	string value = 2;
 	string targetID = 3;
+	string userID = 4;
+	string type = 5;
+	repeated string permissions = 6;
+	UnixTime createdAt = 7;
+	UnixTime expiryAt = 8;
+	bool active = 9;
+	UnixTime usedAt = 10;
 }
 
