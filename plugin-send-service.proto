@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package schema;
+option go_package = "gapi";
+
+import "pipe.proto";
+import "value.proto";
+
+service PluginSendService {
+
+	rpc SendMsg(SendMsgReq) returns (SendMsgRes);
+
+	rpc SendStreamMsg(stream SendMsgReq) returns (SendMsgRes);
+}
+
+message SendMsgReq {
+	PipeExt pipe = 1;
+	string inputID = 2;
+	map<string, Value> message = 3;
+}
+
+message SendMsgRes {
+}

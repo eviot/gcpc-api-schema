@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package schema;
+option go_package = "gapi";
+
+enum VarType {
+	INT = 0;
+	BOOL = 1;
+	STRING = 2;
+}

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package schema;
+option go_package = "gapi";
+
+import "value.proto";
+
+message Pipe {
+	string ID = 1;
+	string pipeDescriptorID = 2;
+	map<string, Value> params = 3;
+	repeated PipeBind binds = 4;
+}
+
+message PipeBind {
+	string fromOutputID = 1;
+	string toPipeID = 2;
+	string toInputID = 3;
+}
+
+message PipeExt {
+	string ID = 1;
+	string pipeDescriptorID = 2;
+	map<string, Value> params = 4;
+	repeated PipeBindExt binds = 5;
+	string pluginURI = 6;
+	string flowID = 7;
+	string pipeDescriptorName = 8;
+}
+
+message PipeBindExt {
+	string fromOutputID = 1;
+	string toPipeID = 2;
+	PipeExt toPipe = 4;
+	string toInputID = 3;
+}

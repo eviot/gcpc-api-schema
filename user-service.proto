@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package schema;
+option go_package = "gapi";
+
+import "token.proto";
+import "user.proto";
+import "google/protobuf/wrappers.proto";
+
+service UserService {
+	rpc GetUser(GetUserReq) returns (User);
+
+	rpc GetUserTokens(GetUserTokensReq) returns (GetUserTokensRes);
+
+	rpc Login(LoginReq) returns (Token);
+
+	rpc CreateUser(CreateUserReq) returns (Token);
+
+	rpc SendResetPasswordLink(SendResetPasswordLinkReq) returns (SendResetPasswordLinkRes);
+
+	rpc ResetPassword(ResetPasswordReq) returns (ResetPasswordRes);
+
+	rpc ChangeUserPassword(ChangeUserPasswordReq) returns (ChangeUserPasswordRes);
+
+	rpc UpdateUser(UpdateUserReq) returns (UpdateUserRes);
+}
+
+message GetUserReq {
+	oneof filter {
+		string ID = 1;
+		string email = 2;
+		string token = 3;
+	}
+}
+
+message GetUserTokensReq {
+}
+message GetUserTokensRes {
+	repeated Token tokens = 1;
+}
+
+message LoginReq {
+	string email = 1;
+	string pass = 2;
+}
+
+message CreateUserReq {
+	string email = 1;
+	string pass = 2;
+}
+
+message SendResetPasswordLinkReq {
+	string email = 1;
+}
+message SendResetPasswordLinkRes {
+	bool ok = 1;
+}
+
+message ResetPasswordReq {
+	string token = 1;
+	string newPass = 2;
+}
+message ResetPasswordRes {
+	bool ok = 1;
+}
+
+message ChangeUserPasswordReq {
+	string oldPass = 1;
+	string newPass = 2;
+}
+message ChangeUserPasswordRes {
+	bool ok = 1;
+}
+
+message UpdateUserReq {
+	google.protobuf.StringValue email = 1;
+	google.protobuf.StringValue phone = 2;
+	Profile profile = 3;
+	message Profile {
+		google.protobuf.StringValue fullName = 1;
+		google.protobuf.StringValue address = 2;
+	}
+}
+message UpdateUserRes {
+	bool ok = 1;
+}
