@@ -3,7 +3,7 @@ syntax = "proto3";
 package schema;
 option go_package = "gapi";
 
-import "value.proto";
+import "any.proto";
 import "var-type.proto";
 
 message PipeDescriptor {
@@ -21,5 +21,5 @@ message PipeDescriptorParam {
 	string name = 1;
 	string description = 2;
 	VarType type = 3;
-	Value defaultValue = 4;
+	Any defaultValue = 4;
 }

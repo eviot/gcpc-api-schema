@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package schema;
+option go_package = "gapi";
+
+message Any {
+	bytes value = 2;
+}

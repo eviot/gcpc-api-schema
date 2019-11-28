@@ -4,7 +4,7 @@ package schema;
 option go_package = "gapi";
 
 import "unix-time.proto";
-import "value.proto";
+import "any.proto";
 
 message Flow {
 	string ID = 2;
@@ -12,7 +12,7 @@ message Flow {
 	FlowStatus status = 4;
 	UnixTime createdAt = 5;
 	UnixTime updatedAt = 6;
-	map<string, Value> variables = 7;
+	map<string, Any> variables = 7;
 }
 
 enum FlowStatus {

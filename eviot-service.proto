@@ -12,7 +12,7 @@ import "pipe.proto";
 import "pipe-descriptor.proto";
 import "plugin.proto";
 import "helpers.proto";
-import "value.proto";
+import "any.proto";
 
 service EviotService {
 
@@ -36,6 +36,7 @@ service EviotService {
 	rpc SetFlowStatus(SetFlowStatusReq) returns (SetFlowStatusRes);
 	rpc SetFlowVariable(SetFlowVariableReq) returns (SetFlowVariableRes);
 	rpc SetFlowVariables(SetFlowVariablesReq) returns (SetFlowVariablesRes);
+	rpc WatchFlowVariable(WatchFlowVariableReq) returns (stream WatchFlowVariableRes);
 	// unimplemented
 	rpc RemoveFlow(RemoveFlowReq) returns (RemoveFlowRes);
 	rpc StartFlow(StartFlowReq) returns (StartFlowRes);
@@ -171,14 +172,25 @@ message SetFlowStatusRes {
 message SetFlowVariableReq {
 	string ID = 1;
 	string name = 2;
-	Value value = 3;
+	Any value = 3;
 }
 message SetFlowVariableRes {
 	bool ok = 1;
 }
 message SetFlowVariablesReq {
 	string ID = 1;
-	map<string, Value> variables = 2;
+	map<string, Any> variables = 2;
+}
+message WatchFlowVariableReq {
+	// flow id
+	string ID = 1;
+
+	// variable name
+	string name = 2;
+}
+message WatchFlowVariableRes {
+	// variable value
+	bytes jsonValue = 1;
 }
 message SetFlowVariablesRes {
 	bool ok = 1;

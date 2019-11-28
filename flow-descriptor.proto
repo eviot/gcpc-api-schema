@@ -5,7 +5,7 @@ option go_package = "gapi";
 
 import "unix-time.proto";
 import "pipe.proto";
-import "value.proto";
+import "any.proto";
 import "var-type.proto";
 
 message FlowDescriptor {
@@ -22,5 +22,5 @@ message FlowVariableDescriptor {
 	string name = 1;
 	VarType type = 2;
 	string description = 3;
-	Value defaultValue = 4;
+	Any defaultValue = 4;
 }
