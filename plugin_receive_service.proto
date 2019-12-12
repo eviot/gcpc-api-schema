@@ -8,13 +8,9 @@ import "any.proto";
 option go_package = "gapi";
 
 service PluginReceiveService {
-
-	rpc InitPipe (InitPipeReq) returns (InitPipeRes);
-
-	rpc DestroyPipe (DestroyPipeReq) returns (DestroyPipeRes);
-
-	rpc ReceiveMsg (ReceiveMsgReq) returns (ReceiveMsgRes);
-
+	rpc InitPipe         (InitPipeReq)          returns (InitPipeRes);
+	rpc DestroyPipe      (DestroyPipeReq)       returns (DestroyPipeRes);
+	rpc ReceiveMsg       (ReceiveMsgReq)        returns (ReceiveMsgRes);
 	rpc ReceiveStreamMsg (stream ReceiveMsgReq) returns (ReceiveMsgRes);
 }
 
