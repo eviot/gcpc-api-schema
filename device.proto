@@ -1,14 +1,15 @@
 syntax = "proto3";
 
 package schema;
+
+import "unix_time.proto";
+
 option go_package = "gapi";
 
-import "unix-time.proto";
-
 message Device {
-	string ID = 1;
-	string name = 2;
-	string deviceTypeID = 3;
-	string userID = 4;
-	UnixTime createdAt = 5;
+	string   id             = 1;
+	string   name           = 2;
+	string   device_type_id = 3;
+	string   user_id        = 4;
+	UnixTime created_at     = 5;
 }

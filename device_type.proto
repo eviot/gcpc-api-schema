@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package schema;
+
+import "unix_time.proto";
+
+option go_package = "gapi";
+
+message DeviceType {
+	string   id                 = 1;
+	string   name               = 2;
+	string   flow_descriptor_id = 4;
+	string   user_id            = 3;
+	UnixTime created_at         = 5;
+}

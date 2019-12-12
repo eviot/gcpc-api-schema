@@ -4,21 +4,21 @@ package schema;
 option go_package = "gapi";
 
 message Page {
-	int32 skip = 1;
+	int32 skip  = 1;
 	int32 limit = 2;
 }
 
 enum SortDirection {
 	NO_SORT = 0;
-	ASC = 1;
-	DESC = 2;
+	ASC     = 1;
+	DESC    = 2;
 }
 
 message Sort {
 	string order = 1;
-	By by = 2;
+	By     by    = 2;
 	enum By {
-		ASC = 0;
+		ASC  = 0;
 		DESC = 1;
 	}
 }

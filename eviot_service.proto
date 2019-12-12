@@ -1,0 +1,374 @@
+syntax = "proto3";
+
+package schema;
+
+import "token.proto";
+import "device.proto";
+import "device_type.proto";
+import "flow.proto";
+import "flow_descriptor.proto";
+import "pipe.proto";
+import "pipe_descriptor.proto";
+import "plugin.proto";
+import "helpers.proto";
+import "any.proto";
+
+option go_package = "gapi";
+
+service EviotService {
+
+	// device registration in the system
+	// rpc RegDevice(RegDeviceReq) returns (RegDeviceRes);
+	// device authorization in the system
+	// rpc AuthDevice(AuthDeviceReq) returns (AuthDeviceRes);
+	// set device status: online or offline
+	//rpc SetDeviceOnline(SetDeviceOnlineReq) returns (SetDeviceOnlineRes);
+
+	rpc GetToken (GetTokenReq) returns (Token);
+
+	rpc GetPlugin    (GetPluginReq)    returns  (Plugin);
+	rpc AddPlugin    (AddPluginReq)    returns  (AddPluginRes);
+	rpc UpdatePlugin (UpdatePluginReq) returns  (UpdatePluginRes);
+	rpc RemovePlugin (RemovePluginReq) returns  (RemovePluginRes);
+	rpc ListPlugins  (ListPluginsReq)  returns  (ListPluginsRes);
+
+	rpc GetFlow           (GetFlowReq)           returns  (Flow);
+	rpc AddFlow           (AddFlowReq)           returns  (AddFlowRes);
+	rpc SetFlowStatus     (SetFlowStatusReq)     returns  (SetFlowStatusRes);
+	rpc SetFlowVariable   (SetFlowVariableReq)   returns  (SetFlowVariableRes);
+	rpc SetFlowVariables  (SetFlowVariablesReq)  returns  (SetFlowVariablesRes);
+	rpc WatchFlowVariable (WatchFlowVariableReq) returns  (stream WatchFlowVariableRes);
+	// unimplemented
+	rpc RemoveFlow        (RemoveFlowReq)        returns  (RemoveFlowRes);
+	rpc StartFlow         (StartFlowReq)         returns  (StartFlowRes);
+	// unimplemented
+	rpc StopFlow          (StopFlowReq)          returns  (StopFlowRes);
+
+	rpc GetFlowDescriptor    (GetFlowDescriptorReq)    returns  (FlowDescriptor);
+	rpc AddFlowDescriptor    (AddFlowDescriptorReq)    returns  (AddFlowDescriptorRes);
+	rpc UpdateFlowDescriptor (UpdateFlowDescriptorReq) returns  (UpdateFlowDescriptorRes);
+	rpc RemoveFlowDescriptor (RemoveFlowDescriptorReq) returns  (RemoveFlowDescriptorRes);
+	// unimplemented
+	rpc ListFlowDescriptors  (ListFlowDescriptorsReq)  returns  (ListFlowDescriptorsRes);
+
+	rpc GetPipeDescriptor    (GetPipeDescriptorReq)    returns  (PipeDescriptor);
+	rpc AddPipeDescriptor    (AddPipeDescriptorReq)    returns  (AddPipeDescriptorRes);
+	// unimplemented
+	rpc UpdatePipeDescriptor (UpdatePipeDescriptorReq) returns  (UpdatePipeDescriptorRes);
+	rpc RemovePipeDescriptor (RemovePipeDescriptorReq) returns  (RemovePipeDescriptorRes);
+	rpc ListPipeDescriptors  (ListPipeDescriptorsReq)  returns  (ListPipeDescriptorsRes);
+
+	rpc GetDeviceType    (GetDeviceTypeReq)    returns  (DeviceType);
+	rpc AddDeviceType    (AddDeviceTypeReq)    returns  (AddDeviceTypeRes);
+	rpc UpdateDeviceType (UpdateDeviceTypeReq) returns  (UpdateDeviceTypeRes);
+	rpc RemoveDeviceType (RemoveDeviceTypeReq) returns  (RemoveDeviceTypeRes);
+	rpc ListDeviceTypes  (ListDeviceTypesReq)  returns  (ListDeviceTypesRes);
+
+	rpc GetDevice    (GetDeviceReq)    returns  (Device);
+	rpc AddDevice    (AddDeviceReq)    returns  (AddDeviceRes);
+	rpc UpdateDevice (UpdateDeviceReq) returns  (UpdateDeviceRes);
+	rpc RemoveDevice (RemoveDeviceReq) returns  (RemoveDeviceRes);
+	rpc ListDevices  (ListDevicesReq)  returns  (ListDevicesRes);
+}
+
+// message RegDeviceReq {
+// 	string deviceType_id = 1;
+// 	string user_id = 2;
+// }
+// message RegDeviceRes {
+// 	string device_id = 1;
+// }
+// message AuthDeviceReq {
+// 	string device_id = 1;
+// }
+// message AuthDeviceRes {
+// 	bool ok = 1;
+// }
+// message SetDeviceOnlineReq {
+// 	string device_id = 1;
+// 	bool online = 2;
+// }
+// message SetDeviceOnlineRes {
+// 	bool ok = 1;
+// }
+
+message GetTokenReq {
+	oneof filter {
+		string value     = 1;
+		string target_id = 2;
+		string user_id   = 4;
+	}
+}
+
+message StartFlowReq {
+	string id = 1;
+}
+message StartFlowRes {}
+
+message StopFlowReq {
+	string id = 1;
+}
+message StopFlowRes {}
+
+
+message GetPluginReq {
+	string id = 1;
+}
+message AddPluginReq {
+	string name       = 1;
+	string plugin_uri = 2;
+}
+message AddPluginRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message UpdatePluginReq {
+	string id         = 1;
+	string name       = 2;
+	string plugin_uri = 3;
+}
+message UpdatePluginRes {
+	bool ok = 1;
+}
+message RemovePluginReq {
+	string id = 1;
+}
+message RemovePluginRes {
+	bool ok = 1;
+}
+message ListPluginsReq {
+	Filter filter = 1;
+	Sort   sort   = 4;
+	Page   page   = 5;
+	message Filter {
+		string name    = 1;
+		string user_id = 2;
+	}
+	message Sort {
+		SortDirection name       = 2;
+		SortDirection created_at = 1;
+	}
+}
+message ListPluginsRes {
+	repeated Plugin plugins = 1;
+}
+
+message GetFlowReq {
+	string id = 1;
+}
+message AddFlowReq {
+	string flow_descriptor_id = 1;
+}
+message AddFlowRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message SetFlowStatusReq {
+	string     id     = 1;
+	FlowStatus status = 2;
+}
+message SetFlowStatusRes {
+	bool ok = 1;
+}
+message SetFlowVariableReq {
+	string id    = 1;
+	string name  = 2;
+	Any    value = 3;
+}
+message SetFlowVariableRes {
+	bool ok = 1;
+}
+message SetFlowVariablesReq {
+	string           id        = 1;
+	map<string, Any> variables = 2;
+}
+message WatchFlowVariableReq {
+	// flow id
+	string id = 1;
+
+	// variable name
+	string name = 2;
+}
+message WatchFlowVariableRes {
+	// variable value
+	Any value = 1;
+}
+message SetFlowVariablesRes {
+	bool ok = 1;
+}
+message RemoveFlowReq {
+	string id = 1;
+}
+message RemoveFlowRes {
+	bool ok = 1;
+}
+
+message GetFlowDescriptorReq {
+	string id = 1;
+}
+message AddFlowDescriptorReq {
+	string                          name      = 1;
+	repeated FlowVariableDescriptor variables = 2;
+	repeated Pipe                   pipes     = 3;
+}
+message AddFlowDescriptorRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message UpdateFlowDescriptorReq {
+	string                          id        = 1;
+	string                          name      = 2;
+	repeated FlowVariableDescriptor variables = 3;
+	repeated Pipe                   pipes     = 4;
+}
+message UpdateFlowDescriptorRes {
+	bool ok = 1;
+}
+message RemoveFlowDescriptorReq {
+	string id = 1;
+}
+message RemoveFlowDescriptorRes {
+	bool ok = 1;
+}
+message ListFlowDescriptorsReq {
+	string user_id = 1;
+	Sort   sort    = 4;
+	Page   page    = 5;
+}
+message ListFlowDescriptorsRes {
+	repeated FlowDescriptor flow_descriptors = 1;
+}
+
+message GetPipeDescriptorReq {
+	string id = 1;
+}
+message AddPipeDescriptorReq {
+	string                       name        = 2;
+	string                       plugin_id   = 3;
+	string                       description = 4;
+	repeated PipeDescriptorParam params      = 5;
+	repeated string              inputs      = 6;
+	repeated string              outputs     = 7;
+	bool                         need_init   = 8;
+}
+message AddPipeDescriptorRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message UpdatePipeDescriptorReq {
+	string                       id          = 1;
+	string                       name        = 2;
+	string                       plugin_id   = 3;
+	string                       description = 4;
+	repeated PipeDescriptorParam params      = 5;
+	repeated string              inputs      = 6;
+	repeated string              outputs     = 7;
+	bool                         need_init   = 8;
+}
+message UpdatePipeDescriptorRes {
+	bool ok = 1;
+}
+message RemovePipeDescriptorReq {
+	string id = 1;
+}
+message RemovePipeDescriptorRes {
+	bool ok = 1;
+}
+message ListPipeDescriptorsReq {
+	Filter filter = 1;
+	Sort   sort   = 4;
+	Page   page   = 5;
+	message Filter {
+		string name      = 1;
+		string plugin_id = 2;
+	}
+	message Sort {
+		SortDirection name       = 2;
+		SortDirection created_at = 1;
+	}
+}
+message ListPipeDescriptorsRes {
+	repeated PipeDescriptor pipe_descriptors = 1;
+}
+
+message GetDeviceTypeReq {
+	string id = 1;
+}
+message AddDeviceTypeReq {
+	string name               = 2;
+	string flow_descriptor_id = 4;
+}
+message AddDeviceTypeRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message UpdateDeviceTypeReq {
+	string id   = 1;
+	string name = 2;
+}
+message UpdateDeviceTypeRes {
+	bool ok = 1;
+}
+message RemoveDeviceTypeReq {
+	string id = 1;
+}
+message RemoveDeviceTypeRes {
+	bool ok = 1;
+}
+message ListDeviceTypesReq {
+	Filter filter = 1;
+	Sort   sort   = 4;
+	Page   page   = 5;
+	message Filter {
+		string name    = 1;
+		string user_id = 2;
+	}
+	message Sort {
+		SortDirection name       = 2;
+		SortDirection created_at = 1;
+	}
+}
+message ListDeviceTypesRes {
+	repeated DeviceType device_types = 1;
+}
+
+message GetDeviceReq {
+	string id = 1;
+}
+message AddDeviceReq {
+	string name           = 2;
+	string device_type_id = 3;
+}
+message AddDeviceRes {
+	bool   ok = 1;
+	string id = 2;
+}
+message UpdateDeviceReq {
+	string id   = 1;
+	string name = 2;
+}
+message UpdateDeviceRes {
+	bool ok = 1;
+}
+message RemoveDeviceReq {
+	string id = 1;
+}
+message RemoveDeviceRes {
+	bool ok = 1;
+}
+message ListDevicesReq {
+	Filter filter = 1;
+	Sort   sort   = 4;
+	Page   page   = 5;
+	message Filter {
+		string name    = 1;
+		string user_id = 2;
+	}
+	message Sort {
+		SortDirection name       = 2;
+		SortDirection created_at = 1;
+	}
+}
+message ListDevicesRes {
+	repeated Device devices = 1;
+}

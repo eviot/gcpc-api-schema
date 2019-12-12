@@ -3,7 +3,8 @@ syntax = "proto3";
 package schema;
 option go_package = "gapi";
 
-message UnixTime {
-	int64 sec = 1;
-	int64 nsec = 2;
+enum VarType {
+	INT    = 0;
+	BOOL   = 1;
+	STRING = 2;
 }

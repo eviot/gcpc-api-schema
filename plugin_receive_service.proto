@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package schema;
+
+import "pipe.proto";
+import "any.proto";
+
+option go_package = "gapi";
+
+service PluginReceiveService {
+
+	rpc InitPipe (InitPipeReq) returns (InitPipeRes);
+
+	rpc DestroyPipe (DestroyPipeReq) returns (DestroyPipeRes);
+
+	rpc ReceiveMsg (ReceiveMsgReq) returns (ReceiveMsgRes);
+
+	rpc ReceiveStreamMsg (stream ReceiveMsgReq) returns (ReceiveMsgRes);
+}
+
+message InitPipeReq {
+	PipeExt pipe = 1;
+}
+
+message InitPipeRes {
+}
+
+message DestroyPipeReq {
+	string pipe_id              = 1;
+	string pipe_descriptor_name = 2;
+}
+
+message DestroyPipeRes {
+}
+
+message ReceiveMsgReq {
+	PipeExt          pipe     = 1;
+	string           input_id = 2;
+	map<string, Any> message  = 3;
+}
+
+message ReceiveMsgRes {
+}

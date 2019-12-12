@@ -1,15 +1,16 @@
 syntax = "proto3";
 
 package schema;
+
+import "unix_time.proto";
+
 option go_package = "gapi";
 
-import "unix-time.proto";
-
 message Plugin {
-	string ID = 1;
-	string name = 2;
-	string userID = 4;
-	string pluginURI = 5;
-	UnixTime createdAt = 6;
-	UnixTime updatedAt = 7;
+	string   id         = 1;
+	string   name       = 2;
+	string   user_id    = 4;
+	string   plugin_uri = 5;
+	UnixTime created_at = 6;
+	UnixTime updated_at = 7;
 }

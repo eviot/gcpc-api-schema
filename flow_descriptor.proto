@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package schema;
+
+import "unix_time.proto";
+import "pipe.proto";
+import "any.proto";
+import "var_type.proto";
+
+option go_package = "gapi";
+
+message FlowDescriptor {
+	string                          id         = 1;
+	string                          name       = 7;
+	repeated FlowVariableDescriptor variables  = 2;
+	repeated Pipe                   pipes      = 3;
+	string                          user_id    = 4;
+	UnixTime                        created_at = 5;
+	UnixTime                        updated_at = 6;
+}
+
+message FlowVariableDescriptor {
+	string  name          = 1;
+	VarType type          = 2;
+	string  description   = 3;
+	Any     default_value = 4;
+}

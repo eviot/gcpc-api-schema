@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package schema;
+
+import "any.proto";
+import "var_type.proto";
+
+option go_package = "gapi";
+
+message PipeDescriptor {
+	string                       id          = 1;
+	string                       name        = 2;
+	string                       plugin_id   = 3;
+	string                       description = 4;
+	string                       color       = 9;
+	string                       text_align  = 10;
+	repeated PipeDescriptorParam params      = 5;
+	repeated string              inputs      = 6;
+	string                       inputs_exp  = 11;
+	repeated string              outputs     = 7;
+	string                       outputs_exp = 12;
+	bool                         need_init   = 8;
+}
+
+message PipeDescriptorParam {
+	string name          = 1;
+	string description   = 2;
+	Type   type          = 3;
+	Any    default_value = 4;
+	enum Type {
+		Unknown = 0;
+		Int     = 1;
+		String  = 2;
+		Bool    = 3;
+		JSON    = 4;
+		JS      = 5;
+	}
+}
+
+message PipeDescriptorParamView {
+	string           title       = 1;
+	string           description = 2;
+	Type             type        = 3;
+	int32            min         = 4;
+	int32            max         = 5;
+	repeated Any     values      = 6;
+	map<string, Any> map         = 7;
+	bool             input       = 8;
+	bool             output      = 9;
+	enum Type {
+		Unknown = 0;
+	}
+}

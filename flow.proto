@@ -1,22 +1,23 @@
 syntax = "proto3";
 
 package schema;
-option go_package = "gapi";
 
-import "unix-time.proto";
+import "unix_time.proto";
 import "any.proto";
 
+option go_package = "gapi";
+
 message Flow {
-	string ID = 2;
-	string flowDescriptorID = 3;
-	FlowStatus status = 4;
-	UnixTime createdAt = 5;
-	UnixTime updatedAt = 6;
-	map<string, Any> variables = 7;
+	string           id                 = 2;
+	string           flow_descriptor_id = 3;
+	FlowStatus       status             = 4;
+	UnixTime         created_at         = 5;
+	UnixTime         updated_at         = 6;
+	map<string, Any> variables          = 7;
 }
 
 enum FlowStatus {
-	STOPPED = 0;
+	STOPPED  = 0;
 	STARTING = 1;
-	RUNNING = 2;
+	RUNNING  = 2;
 }
